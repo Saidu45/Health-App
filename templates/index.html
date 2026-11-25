@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Survey Application</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            margin: 0;
+            padding: 30px 15px;
+            color: #263445;
+        }
+
+        .container {
+            max-inline-size: 750px;;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #176b57;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: center;
+            color: #687585;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd3dc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .expense-item {
+            display: grid;
+            grid-template-columns: 25px 1fr 1fr;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .expense-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .expense-item label {
+            margin: 0;
+        }
+
+        .expense-item input[type="number"] {
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 19px;
+            margin-top: 28px;
+            color: #176b57;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #176b57;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #105443;
+        }
+
+        .note {
+            color: #687585;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .success {
+            background: #e3f5e9;
+            color: #176b35;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .error {
+            background: #fde8e8;
+            color: #a12626;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        @media (max-inline-size: 750px;) {
+            .container {
+                padding: 20px;
+            }
+
+            .expense-item {
+                grid-template-columns: 25px 1fr;
+            }
+
+            .expense-item input[type="number"] {
+                grid-column: 2;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Healthcare Survey</h1>
+
+    <p class="description">
+        Please complete the survey using the information requested below.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form action="/submit" method="POST">
+
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input
+                type="number"
+                id="age"
+                name="age"
+                min="1"
+                max="120"
+                placeholder="Enter age"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="total_income">Total Income</label>
+            <input
+                type="number"
+                id="total_income"
+                name="total_income"
+                min="0"
+                step="0.01"
+                placeholder="Enter total income"
+                required
+            >
+        </div>
+
+        <h2>Monthly Expenses</h2>
+
+        <p>Select the expense categories that apply and enter the amount spent.</p>
+
+        <div class="expense-item">
+            <input type="checkbox" id="utilities_check"
+                   name="expense_categories" value="utilities">
+            <label for="utilities_check">Utilities</label>
+            <input type="number" name="utilities" min="0" step="0.01"
+                   placeholder="Amount" disabled>
+        </div>
+
+        <div class="expense-item">
+            <input type="checkbox" id="entertainment_check"
+                   name="expense_categories" value="entertainment">
+            <label for="entertainment_check">Entertainment</label>
+            <input type="number" name="entertainment" min="0" step="0.01"
+                   placeholder="Amount" disabled>
+        </div>
+
+        <div class="expense-item">
+            <input type="checkbox" id="school_fees_check"
+                   name="expense_categories" value="school_fees">
+            <label for="school_fees_check">School Fees</label>
+            <input type="number" name="school_fees" min="0" step="0.01"
+                   placeholder="Amount" disabled>
+        </div>
+
+        <div class="expense-item">
+            <input type="checkbox" id="shopping_check"
+                   name="expense_categories" value="shopping">
+            <label for="shopping_check">Shopping</label>
+            <input type="number" name="shopping" min="0" step="0.01"
+                   placeholder="Amount" disabled>
+        </div>
+
+        <div class="expense-item">
+            <input type="checkbox" id="healthcare_check"
+                   name="expense_categories" value="healthcare">
+            <label for="healthcare_check">Healthcare</label>
+            <input type="number" name="healthcare" min="0" step="0.01"
+                   placeholder="Amount" disabled>
+        </div>
+
+        <p class="note">
+            Only select categories that apply to the participant.
+        </p>
+
+        <button type="submit">Submit Survey</button>
+
+    </form>
+
+</div>
+
+<script>
+    const expenseCheckboxes = document.querySelectorAll(
+        'input[name="expense_categories"]'
+    );
+
+    expenseCheckboxes.forEach(function(checkbox) {
+
+        checkbox.addEventListener("change", function() {
+
+            const amountField = document.querySelector(
+                'input[name="' + checkbox.value + '"]'
+            );
+
+            amountField.disabled = !checkbox.checked;
+            amountField.required = checkbox.checked;
+
+            if (!checkbox.checked) {
+                amountField.value = "";
+            }
+
+        });
+
+    });
+</script>
+
+</body>
+</html>

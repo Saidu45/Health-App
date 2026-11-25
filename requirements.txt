@@ -1,0 +1,10 @@
+Flask
+pymongo[srv]
+python-dotenv
+pandas
+numpy
+matplotlib
+seaborn
+jupyter
+ipykernel
+gunicorn
